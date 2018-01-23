@@ -2,24 +2,28 @@ const puppeteer = require('puppeteer');
 
 
 async function run() {
-  const LISTING_SELECTOR_NORMAL = '#search-results > div > section > div:nth-child(2) > section';
+  const LISTING_SELECTOR_NORMAL = '.listing-item.normal';
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   
   await page.goto('https://www.ksl.com/classifieds/s/Appliances/Washers+and+Dryers');
-  await page.screenshot({ path: 'screenshots/page-1.png' });
   await page.waitFor(2 * 1000);
-  const listings = await page.evaluate((sel) => {
-    const _listings = document.querySelectorAll(sel).innerHtml;
-    console.log(_listings);
-    return _listings;
-  }, LISTING_SELECTOR_NORMAL);
+  await page.screenshot({ path: 'screenshots/page-1.png' });
+  let listings = await page.evaluate(sel => {
+      const potentialListings = [];
+      document.querySelectorAll(sel).forEach(_elem => {
+        const elemData = _elem.children[1];
+        const _title = elemData.children[0].textContent;
+        const _price = parseInt(elemData.children[1].textContent.replace('$', ''), 10);
+        potentialListings.push({title : _title, price: _price});
+      });
+      return potentialListings;
+    }, LISTING_SELECTOR_NORMAL);
 
-  //const listings = dom.querySelectorAll(LISTING_SELECTOR_NORMAL);
-
-  //console.log(listings);
+  console.log(listings);
   
   browser.close();
 }
 
 run();
+
