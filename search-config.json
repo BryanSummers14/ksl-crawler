@@ -1,0 +1,7 @@
+{
+    "url": "https://www.ksl.com/classifieds/s/Appliances/Washers+and+Dryers",
+    "search_selector": ".listing-item.normal",
+    "pages_to_search": 1,
+    "next_selector": "body > div.ksl-assets-container.ddm-menu-container > div.inner.ddm-menu-container__inner > div.content.ddm-menu-container__content > div.page-wrap > div.search-results-footer > div.pagination > a.next.link",
+    "loop_time": 6000
+}

@@ -1,15 +1,16 @@
 const puppeteer = require('puppeteer');
+const config = require('./search-config');
 
 
 async function run() {
-  const LISTING_SELECTOR_NORMAL = '.listing-item.normal';
+  const LISTING_SELECTOR_NORMAL = config.search_selector;
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   
-  await page.goto('https://www.ksl.com/classifieds/s/Appliances/Washers+and+Dryers');
+  await page.goto(config.url);
   await page.waitFor(2 * 1000);
-  await page.screenshot({ path: 'screenshots/page-1.png' });
-  let listings_front_page = await page.evaluate(sel => {
+  // Initial listings
+  let listings = await page.evaluate(sel => {
       const potentialListings = [];
       document.querySelectorAll(sel).forEach(_elem => {
         const elemData = _elem.children[1];
@@ -21,30 +22,34 @@ async function run() {
       return potentialListings;
     }, LISTING_SELECTOR_NORMAL);
 
-    // page.click('body > div.ksl-assets-container.ddm-menu-container > div.inner.ddm-menu-container__inner > div.content.ddm-menu-container__content > div.page-wrap > div.search-results-footer > div.mobile-pagination > a.icon.icon--circle-right-arrow.active-link');
+    let pages = config.pages_to_search && config.pages_to_search > 0 ? config.pages_to_search : 0;
+    // Listings for each additional page
+    while(pages > 0) {
+        await page.click(config.next_selector);
+        await page.waitFor(2000);
+    
+        let listings_next_page = await page.evaluate(sel => {
+            const potentialListings = [];
+            document.querySelectorAll(sel).forEach(_elem => {
+              const elemData = _elem.children[1];
+              const _title = elemData.children[0].children[0].textContent;
+              const _link = elemData.children[0].children[0].href;
+              const _price = parseInt(elemData.children[1].textContent.replace('$', ''), 10);
+              potentialListings.push({title : _title, link: _link, price: _price});
+            });
+            return potentialListings;
+          }, LISTING_SELECTOR_NORMAL);
+        
+        listings = listings.concat(listings_next_page);
+        --pages;
+    }
+    // Just logging out results for now
+    console.log(listings);
 
-    // await page.waitFor(10 * 1000);
-
-    // let listings_first_page = await page.evaluate(sel => {
-    //     const potentialListings = [];
-    //     document.querySelectorAll(sel).forEach(_elem => {
-    //       const elemData = _elem.children[1];
-    //       const _title = elemData.children[0].children[0].textContent;
-    //       const _link = elemData.children[0].children[0].href;
-    //       const _price = parseInt(elemData.children[1].textContent.replace('$', ''), 10);
-    //       potentialListings.push({title : _title, link: _link, price: _price});
-    //     });
-    //     return potentialListings;
-    //   }, LISTING_SELECTOR_NORMAL);
-
-    // const allListings = [].concat(listings_first_page, listings_front_page);
-
-    // console.log(allListings);
-
-    console.log(listings_front_page);
-  
   browser.close();
 }
 
 run();
+
+// setInterval(run, config.loop_time)
 
