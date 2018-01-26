@@ -1,0 +1,12 @@
+{
+    "search_url": "https://www.ksl.com/classifieds/#Search",
+    "keyword_search_input": "#homepage > div > div.tabs-container > section > section > div:nth-child(1) > div:nth-child(1) > input",
+    "price_range_low": "#homepage > div > div.tabs-container > section > section > div:nth-child(1) > div:nth-child(2) > div > input:nth-child(1)",
+    "price_range_high": "#homepage > div > div.tabs-container > section > section > div:nth-child(1) > div:nth-child(2) > div > input:nth-child(2)",
+    "zip": "#homepage > div > div.tabs-container > section > section > div:nth-child(1) > div.searchFrom-locationContainer > div:nth-child(1) > input",
+    "zip_range": "#homepage > div > div.tabs-container > section > section > div:nth-child(1) > div.searchFrom-locationContainer > div:nth-child(2) > select",
+    "search_button": "#homepage > div > div.tabs-container > section > section > div:nth-child(2) > button",
+    "next_selector": "body > div.ksl-assets-container.ddm-menu-container > div.inner.ddm-menu-container__inner > div.content.ddm-menu-container__content > div.page-wrap > div.search-results-footer > div.pagination > a.next.link",
+    "pages_to_search": 1,
+    "loop_time": 6000
+}

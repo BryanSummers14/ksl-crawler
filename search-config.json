@@ -1,7 +1,10 @@
 {
-    "url": "https://www.ksl.com/classifieds/s/Appliances/Washers+and+Dryers",
-    "search_selector": ".listing-item.normal",
-    "pages_to_search": 1,
-    "next_selector": "body > div.ksl-assets-container.ddm-menu-container > div.inner.ddm-menu-container__inner > div.content.ddm-menu-container__content > div.page-wrap > div.search-results-footer > div.pagination > a.next.link",
-    "loop_time": 6000
+    "keywords": "washer & dryer",
+    "price_min": "50",
+    "price_max": "1000",
+    "zip_code": "84094",
+    "range": "10",
+    "pages_to_search": 3,
+    "loop_time": 6000,
+    "times_to_loop": 5
 }
